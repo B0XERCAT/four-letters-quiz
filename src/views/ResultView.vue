@@ -1,0 +1,77 @@
+<template>
+  <div id="container">
+    <div id="result">
+      <p v-if="score == '10'" class="comment">🎉</p>
+      <p id="score">점수: {{ score }} / 10</p>
+      <div id="timer" v-if="score == 10">
+        <p>시간: {{ timer }}초</p>
+      </div>
+      <div v-else-if="score >= 8">
+        <p class="comment">😣</p>
+        <p>조금만 더 했으면 됐는데....!</p>
+      </div>
+      <div v-else-if="score >= 6">
+        <p class="comment">🔥</p>
+        <p>우리 조금 더 분발해 보아요..!</p>
+      </div>
+      <div v-else>
+        <p class="comment">🦅</p>
+        <p>독수리 타법을 고칠 필요가 있군요!</p>
+      </div>
+    </div>
+  </div>
+  <RouterLink to="/"><VButton text="다시 시작"></VButton></RouterLink>
+</template>
+
+<script>
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+import VButton from "../components/VButton.vue";
+
+export default {
+  components: { VButton },
+  setup() {
+    const route = useRoute();
+    const score = computed(() => route.query.score || "error");
+    const timer = computed(() => route.query.timer || "측정불가");
+    return {
+      score,
+      timer,
+    };
+  },
+};
+</script>
+
+<style scoped>
+#container {
+  display: flex;
+  justify-content: center;
+}
+p {
+  color: white;
+}
+#result {
+  width: 300px;
+  height: 300px;
+  background-color: rgb(31, 31, 31);
+  padding: 30px 15px;
+  border-radius: 15px;
+  margin-bottom: 40px;
+}
+#score {
+  font-size: 38px;
+  font-weight: 700;
+  margin-bottom: 40px;
+}
+#timer {
+  font-size: 36px;
+  font-weight: 700;
+}
+span {
+  font-size: 30px;
+}
+.comment {
+  margin-bottom: 30px;
+  font-size: 80px;
+}
+</style>
