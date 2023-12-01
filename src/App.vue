@@ -1,4 +1,5 @@
 <template>
+  <VAdfit></VAdfit>
   <TheTitle></TheTitle>
   <main>
     <RouterView></RouterView>
@@ -7,9 +8,10 @@
 
 <script>
 import TheTitle from "./components/TheTitle.vue";
+import VAdfit from "./components/VAdfit.vue";
 export default {
   name: "App",
-  components: { TheTitle },
+  components: { TheTitle, VAdfit },
 };
 </script>
 
@@ -23,7 +25,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  margin-top: 20px;
   margin-bottom: 20px;
 }
 </style>

@@ -31,13 +31,17 @@
       />
     </div>
   </div>
-  <RouterLink to="/"><VButton text="다시 시작"></VButton></RouterLink>
+  <div class="fade-in">
+    <RouterLink to="/"
+      ><VButton v-if="showRestartButton" text="다시 시작"></VButton
+    ></RouterLink>
+  </div>
 
   <div class="contact"><p>데이터 추가 요청: seojin3154@naver.com</p></div>
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import VButton from "../components/VButton.vue";
 
@@ -48,13 +52,14 @@ export default {
     const score = computed(() => route.query.score || "error");
     const timer = computed(() => route.query.timer || "측정불가");
     let result = "";
+    const showRestartButton = ref(false);
 
     if (score.value === "10") {
       result = `하핫! 10문제 모두 맞췄다!\n${route.query.timer}초만에 클리어 했어!`;
     } else {
       result = `나는 ${route.query.score}문제 맞췄어! 너도 도전해볼래!?`;
     }
-    
+
     if (!window.Kakao.isInitialized()) {
       window.Kakao.init(process.env.VUE_APP_LOCAL_API_KEY);
     }
@@ -79,11 +84,16 @@ export default {
         });
     };
 
+    setTimeout(() => {
+      showRestartButton.value = true;
+    }, 2000);
+
     return {
       score,
       timer,
       sendKakao,
       copyToClipboard,
+      showRestartButton,
     };
   },
 };
@@ -104,6 +114,7 @@ p {
   padding: 30px 15px;
   border-radius: 15px;
   margin-bottom: 30px;
+  animation: fadein2 2s;
 }
 #score {
   font-size: 38px;
@@ -133,5 +144,27 @@ img {
 .contact p {
   color: grey;
   font-size: 12px;
+}
+.fade-in {
+  animation: fadein4 4s;
+}
+@keyframes fadein2 {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fadein4 {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 </style>
