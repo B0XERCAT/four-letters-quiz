@@ -12,6 +12,7 @@ export default {
 
 <style scoped>
 .button {
+  cursor: pointer;
   width: 270px;
   height: 45px;
   font-size: 25px;

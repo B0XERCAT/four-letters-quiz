@@ -36,6 +36,7 @@ export default {
     const wordInput = ref(null);
     let wordTimer = null;
     const wordTimerDisplay = ref(timeLimit);
+    let animationFrameId = null;
 
     onMounted(() => {
       if (wordInput.value) {
@@ -55,9 +56,9 @@ export default {
       const animate = (now) => {
         const elapsedTime = now - startTime;
         timer.value = (elapsedTime / 1000).toFixed(2);
-        requestAnimationFrame(animate);
+        animationFrameId = requestAnimationFrame(animate);
       };
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
     };
 
     const formattedTimer = computed(() => {
@@ -135,6 +136,7 @@ export default {
 
     const endGame = () => {
       clearTimeout(wordTimer);
+      cancelAnimationFrame(animationFrameId);
       router.push({
         path: "/result",
         query: { score: score.value, timer: timer.value },
