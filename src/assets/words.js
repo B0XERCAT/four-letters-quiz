@@ -29,7 +29,7 @@ const words = [
   { front: "싱가", back: "포르" },
   { front: "알고", back: "리즘" },
   { front: "알레", back: ["르기", "르망", "그로"] },
-  { front: "어린", back: ["이날", "이집"] },
+  { front: "어린", back: ["이날", "이집", "왕자"] },
   { front: "어장", back: "관리" },
   { front: "이탈", back: "리아" },
   { front: "제네", back: "시스" },

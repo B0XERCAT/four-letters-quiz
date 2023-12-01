@@ -176,7 +176,7 @@ span {
   font-weight: 900;
 }
 .white {
-  color: white;
+  color: rgb(240, 240, 240);
 }
 input.yellow {
   font-size: 60px;
@@ -184,7 +184,7 @@ input.yellow {
   border: none;
   outline: none;
   background-color: transparent;
-  color: yellow;
+  color: rgb(250, 190, 30);
   text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000,
     2px 2px 0 #000;
   font-weight: 900;
@@ -196,6 +196,6 @@ input.yellow {
 }
 .score span {
   font-size: 20px;
-  color: white;
+  color: rgb(240, 240, 240);
 }
 </style>

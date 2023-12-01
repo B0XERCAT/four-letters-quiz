@@ -15,26 +15,23 @@ export default {
 
 <style scoped>
 span {
-  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000,
-    2px 2px 0 #000;
+  text-shadow: -3px -3px 0 #313131, 3px -3px 0 #313131, -3px 3px 0 #313131,
+    3px 3px 0 #313131;
   font-size: 45px;
   font-weight: 900;
 }
 .white {
-  color: white;
+  color: rgb(240, 240, 240);
 }
 .yellow {
-  color: yellow;
+  color: rgb(250, 190, 30);
 }
 div {
-  margin: 30px;
+  margin-top: 30px;
 }
 @media screen and (min-width: 376px) {
   span {
     font-size: 60px;
-  }
-  div {
-    margin: 40px;
   }
 }
 </style>

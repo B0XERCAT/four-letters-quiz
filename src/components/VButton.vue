@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  props:{
+  props: {
     text: String,
   },
 };
@@ -17,20 +17,15 @@ export default {
   height: 45px;
   font-size: 25px;
   font-weight: 900;
-  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
-    1px 1px 0 #000;
-  color: yellow;
-  background-color: rgba(255, 0, 0, 0.808);
-  border: 2px solid rgba(255, 255, 0, 0.733);
+  color: black;
+  background-color: rgb(250, 190, 30);
+  border: 3px solid rgba(80, 55, 0, 0.616);
+  border-bottom: 5px solid rgba(80, 55, 0, 0.616);
   border-radius: 10px;
+  text-shadow: -1px 1px 0 rgba(80, 55, 0, 0.616),
+    1px 1px 0 rgba(80, 55, 0, 0.616);
 }
 .button:hover {
-  background-color: rgba(255, 0, 0, 0.5);
-  color: rgb(252, 252, 122);
-}
-@media screen and (min-width: 376px) {
-  .button{
-    width: 300px;
-  }
+  opacity: 0.8;
 }
 </style>

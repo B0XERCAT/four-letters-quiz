@@ -26,18 +26,16 @@
       <img
         src="../assets/images/link.png"
         alt="링크 복사하기"
-        style="background-color: white"
+        style="background-color: rgb(240, 240, 240)"
         @click="copyToClipboard"
       />
     </div>
   </div>
   <div class="fade-in">
     <RouterLink to="/"
-      ><VButton v-if="showRestartButton" text="다시 시작"></VButton
+      ><VButton v-if="showRestartButton" text="처음으로"></VButton
     ></RouterLink>
   </div>
-
-  <div class="contact"><p>데이터 추가 요청: seojin3154@naver.com</p></div>
 </template>
 
 <script>
@@ -105,15 +103,15 @@ export default {
   justify-content: center;
 }
 p {
-  color: white;
+  color: rgb(240, 240, 240);
 }
 #result {
   width: 300px;
-  height: 300px;
+  height: 280px;
   background-color: rgb(31, 31, 31);
   padding: 30px 15px;
   border-radius: 15px;
-  margin-bottom: 30px;
+  margin: 30px;
   animation: fadein2 2s;
 }
 #score {
@@ -137,13 +135,6 @@ img {
   width: 40px;
   border-radius: 30%;
   margin: 30px 10px;
-}
-.contact {
-  margin-top: 40px;
-}
-.contact p {
-  color: grey;
-  font-size: 12px;
 }
 .fade-in {
   animation: fadein4 4s;
