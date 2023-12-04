@@ -1,5 +1,5 @@
 <template>
-  <button type="button" class="button">{{ text }}</button>
+  <button>{{ text }}</button>
 </template>
 
 <script>
@@ -11,7 +11,7 @@ export default {
 </script>
 
 <style scoped>
-.button {
+button {
   cursor: pointer;
   width: 270px;
   height: 45px;
@@ -25,7 +25,7 @@ export default {
   text-shadow: -1px 1px 0 rgba(80, 55, 0, 0.616),
     1px 1px 0 rgba(80, 55, 0, 0.616);
 }
-.button:hover {
+button:hover {
   opacity: 0.8;
 }
 </style>

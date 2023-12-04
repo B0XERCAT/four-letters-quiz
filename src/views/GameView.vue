@@ -1,42 +1,78 @@
 <template>
-  <div class="container">
-    <div class="quiz-board">
-      <div class="score">
+  <div id="container">
+    <div id="quiz-board" ref="quizBoard">
+      <div id="score">
         <span>{{ wordTimerDisplay.toFixed(2) }}</span>
         <span>{{ score }} / 10</span>
       </div>
-      <p>
-        <span class="white">{{ currentWordStart }}</span>
-        <input
-          ref="wordInput"
-          v-model="inputWordEnd"
-          maxlength="2"
-          class="yellow"
-          @keyup.enter="checkAnswer"
-        />
-      </p>
+      <span>
+        <span id="white" :style="{ right: whiteRight, top: whiteTop }">{{
+          currentWordStart
+        }}</span>
+        <span>
+          <input
+            :style="{ left: whiteRight, top: yellowTop }"
+            ref="wordInput"
+            v-model="inputWordEnd"
+            id="yellow"
+            @keyup.enter="checkAnswer"
+          />
+        </span>
+      </span>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import router from "../router/index.js";
 import words from "@/assets/words.js";
+import cryptoJs from "crypto-js";
+import { randomKey } from "@/main";
 
 const timeLimit = 3.2;
+
 export default {
   setup() {
+    const whiteRight = ref("");
+    const whiteTop = ref("");
+    const yellowTop = ref("");
+    const quizBoard = ref(null);
+
     const allWords = ref(words);
     const wordsList = ref(words);
+    const indexList = ref([]);
+
     const currentIndex = ref(0);
     const inputWordEnd = ref("");
+
+    const wordInput = ref(null);
+
     const score = ref(0);
     const timer = ref(0);
-    const wordInput = ref(null);
+
     let wordTimer = null;
     const wordTimerDisplay = ref(timeLimit);
+
     let animationFrameId = null;
+
+    const calculatePosition = () => {
+      if (quizBoard.value) {
+        const quizBoardRect = quizBoard.value.getBoundingClientRect();
+        whiteRight.value = `${quizBoardRect.right - 170}px`;
+        whiteTop.value = `${quizBoardRect.top + 104}px`;
+        yellowTop.value = `${quizBoardRect.top + 90}px`;
+      }
+    };
+
+    onMounted(() => {
+      calculatePosition();
+      window.addEventListener("resize", calculatePosition);
+    });
+
+    onBeforeUnmount(() => {
+      window.removeEventListener("resize", calculatePosition);
+    });
 
     onMounted(() => {
       if (wordInput.value) {
@@ -80,6 +116,7 @@ export default {
 
         if (!selectedWords.has(selectedWord)) {
           selectedWords.add(selectedWord);
+          indexList.value.push(randomIndex);
         }
       }
       wordsList.value = Array.from(selectedWords);
@@ -104,6 +141,19 @@ export default {
       return currentWord.value.front;
     });
 
+    const onInput = (event) => {
+      inputWordEnd.value = event.target.innerText;
+    };
+
+    const encryptData = (data) => {
+      const textToEncrypt = JSON.stringify(data);
+      const encryptedData = cryptoJs.AES.encrypt(
+        textToEncrypt,
+        randomKey
+      ).toString();
+      return encryptedData;
+    };
+
     const checkAnswer = () => {
       const enteredWordEnd = inputWordEnd.value.toLowerCase();
       const targetWordBack = currentWord.value.back;
@@ -119,14 +169,12 @@ export default {
         wordTimerDisplay.value = timeLimit;
         showNextWord();
       } else {
-        router.push({
-          path: "/result",
-          query: { score: score.value },
-        });
+        endGame();
       }
     };
 
     const showNextWord = () => {
+      inputWordEnd.value = "";
       if (currentIndex.value < wordsList.value.length - 1) {
         currentIndex.value++;
       } else {
@@ -139,7 +187,16 @@ export default {
       cancelAnimationFrame(animationFrameId);
       router.push({
         path: "/result",
-        query: { score: score.value, timer: timer.value },
+        query: {
+          score: encryptData(score.value),
+          timer: encryptData(timer.value),
+          front: String(
+            wordsList.value[score.value == 10 ? 9 : score.value].front
+          ),
+          back: String(
+            wordsList.value[score.value == 10 ? 9 : score.value].back
+          ),
+        },
       });
     };
 
@@ -151,34 +208,46 @@ export default {
       formattedTimer,
       checkAnswer,
       wordTimerDisplay,
+      onInput,
+      whiteRight,
+      whiteTop,
+      yellowTop,
+      quizBoard,
     };
   },
 };
 </script>
 
 <style scoped>
-.container {
+#container {
   display: flex;
   justify-content: center;
 }
-.quiz-board {
-  width: 300px;
-  height: 300px;
+#quiz-board {
+  width: 340px;
+  height: 260px;
   margin-top: 30px;
-  padding: 20px;
   background-color: rgb(31, 31, 31);
   border-radius: 15px;
+}
+#score {
+  margin: 20px;
 }
 span {
   text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000,
     2px 2px 0 #000;
   font-size: 60px;
   font-weight: 900;
+  line-height: 1;
 }
-.white {
+#white {
+  position: absolute;
   color: rgb(240, 240, 240);
 }
-input.yellow {
+#yellow {
+  position: absolute;
+  margin: 0;
+  display: inline;
   font-size: 60px;
   width: 120px;
   border: none;
@@ -188,13 +257,16 @@ input.yellow {
   text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000,
     2px 2px 0 #000;
   font-weight: 900;
+  text-decoration: none;
+  outline: none;
+  box-shadow: none;
 }
-.score {
+#score {
   display: flex;
   justify-content: space-between;
   margin-bottom: 50px;
 }
-.score span {
+#score span {
   font-size: 20px;
   color: rgb(240, 240, 240);
 }

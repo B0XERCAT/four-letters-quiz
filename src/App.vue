@@ -9,6 +9,7 @@
 <script>
 import TheTitle from "./components/TheTitle.vue";
 import VAdfit from "./components/VAdfit.vue";
+
 export default {
   name: "App",
   components: { TheTitle, VAdfit },

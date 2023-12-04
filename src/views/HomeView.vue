@@ -1,5 +1,5 @@
 <template>
-  <div class="explanation">
+  <div id="explanation">
     <div>
       <p>앞의 두 글자만 보고 단어를 완성하세요 !</p>
     </div>
@@ -12,9 +12,6 @@
 import VButton from "../components/VButton.vue";
 export default {
   components: { VButton },
-  setup() {
-    return {};
-  },
 };
 </script>
 
@@ -28,10 +25,10 @@ p {
 }
 @media screen and (min-width: 376px) {
   p {
-    font-size: 15px;
+    font-size: 16px;
   }
 }
-.explanation {
+#explanation {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,14 +38,5 @@ p {
   max-width: 500px;
   margin-bottom: 40px;
   margin-top: 40px;
-}
-#playButton {
-  cursor: pointer;
-  width: 60%;
-  max-width: 200px;
-  margin-bottom: 40px;
-}
-#playButton:hover {
-  opacity: 0.7;
 }
 </style>

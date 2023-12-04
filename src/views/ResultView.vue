@@ -31,7 +31,7 @@
       />
     </div>
   </div>
-  <div class="fade-in">
+  <div id="fade-in-4">
     <RouterLink to="/"
       ><VButton v-if="showRestartButton" text="처음으로"></VButton
     ></RouterLink>
@@ -42,18 +42,62 @@
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import VButton from "../components/VButton.vue";
+import cryptoJs from "crypto-js";
+import { randomKey } from "@/main";
 
 export default {
   components: { VButton },
   setup() {
+    const decryptData = (encryptedData) => {
+      const bytes = cryptoJs.AES.decrypt(encryptedData, randomKey);
+      const decryptedData = bytes.toString(cryptoJs.enc.Utf8);
+      return decryptedData;
+    };
+
     const route = useRoute();
-    const score = computed(() => route.query.score || "error");
-    const timer = computed(() => route.query.timer || "측정불가");
-    let result = "";
+    const score = computed(() => decryptData(route.query.score) || "NULL");
+    const timer = computed(() => {
+      const decryptedTimer = decryptData(route.query.timer) || "INF";
+      return decryptedTimer.slice(1, -1);
+    });
+    const front = ref(null);
+    const back = ref([]);
     const showRestartButton = ref(false);
+    let result = "";
+
+    const alertAnswerMessage = async (front, back) => {
+      if (front && back.length > 0) {
+        let answer = [];
+        for (let i = 0; i < back.length; i++) {
+          answer.push(front + back[i]);
+        }
+        const answerMessage =
+          "가능한 정답은 다음과 같습니다\n\n" + answer.join(", ");
+        setTimeout(() => {
+          showRestartButton.value = true;
+          setTimeout(() => {
+            alert(answerMessage);
+          }, 500);
+        }, 2000);
+      }
+    };
+
+    const fetchData = async () => {
+      front.value = route.query.front;
+      back.value = route.query.back.split(",");
+      await alertAnswerMessage(front.value, back.value);
+    };
 
     if (score.value === "10") {
-      result = `하핫! 10문제 모두 맞췄다!\n${route.query.timer}초만에 클리어 했어!`;
+      setTimeout(() => {
+        showRestartButton.value = true;
+      }, 2000);
+    } else {
+      fetchData();
+    }
+
+    if (score.value === "10") {
+      result = `하핫! 10문제 모두 맞췄다!\n${route.query.timer}초만에 클리어!!!`;
     } else {
       result = `나는 ${route.query.score}문제 맞췄어! 너도 도전해볼래!?`;
     }
@@ -82,13 +126,11 @@ export default {
         });
     };
 
-    setTimeout(() => {
-      showRestartButton.value = true;
-    }, 2000);
-
     return {
       score,
       timer,
+      front,
+      back,
       sendKakao,
       copyToClipboard,
       showRestartButton,
@@ -136,7 +178,7 @@ img {
   border-radius: 30%;
   margin: 30px 10px;
 }
-.fade-in {
+#fade-in-4 {
   animation: fadein4 4s;
 }
 @keyframes fadein2 {
