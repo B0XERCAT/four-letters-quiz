@@ -97,9 +97,9 @@ export default {
     }
 
     if (score.value === "10") {
-      result = `하핫! 10문제 모두 맞췄다!\n${route.query.timer}초만에 클리어!!!`;
+      result = `하핫! 10문제 모두 맞췄다!\n${timer.value}초만에 클리어!!!`;
     } else {
-      result = `나는 ${route.query.score}문제 맞췄어! 너도 도전해볼래!?`;
+      result = `나는 ${score.value}문제 맞췄어! 너도 도전해볼래!?`;
     }
 
     if (!window.Kakao.isInitialized()) {
