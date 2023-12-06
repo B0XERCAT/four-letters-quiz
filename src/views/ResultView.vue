@@ -107,7 +107,7 @@ export default {
     }
     const sendKakao = () => {
       window.Kakao.Link.sendScrap({
-        requestUrl: "http://localhost:8080/",
+        requestUrl: "https://fourlettersquizz.web.app/",
         templateId: 101423,
         templateArgs: {
           RESULT: result,
