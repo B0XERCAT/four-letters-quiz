@@ -77,7 +77,7 @@ export default {
           showRestartButton.value = true;
           setTimeout(() => {
             alert(answerMessage);
-          }, 500);
+          }, 10);
         }, 2000);
       }
     };

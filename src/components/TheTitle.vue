@@ -27,7 +27,7 @@ span {
   color: rgb(250, 190, 30);
 }
 div {
-  margin-top: 30px;
+  margin-top: 20px;
 }
 @media screen and (min-width: 376px) {
   span {

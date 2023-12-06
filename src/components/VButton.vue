@@ -24,6 +24,7 @@ button {
   border-radius: 10px;
   text-shadow: -1px 1px 0 rgba(80, 55, 0, 0.616),
     1px 1px 0 rgba(80, 55, 0, 0.616);
+  margin-bottom: 60px;
 }
 button:hover {
   opacity: 0.8;

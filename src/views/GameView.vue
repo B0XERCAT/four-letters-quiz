@@ -5,18 +5,19 @@
         <span>{{ wordTimerDisplay.toFixed(2) }}</span>
         <span>{{ score }} / 10</span>
       </div>
+      <div id="hidden-input" contenteditable="true" ref="hiddenInput"></div>
       <span>
         <span id="white" :style="{ right: whiteRight, top: whiteTop }">{{
           currentWordStart
         }}</span>
         <span>
-          <input
-            :style="{ left: whiteRight, top: yellowTop }"
+          <div
             ref="wordInput"
-            v-model="inputWordEnd"
+            contenteditable="true"
             id="yellow"
-            @keyup.enter="checkAnswer"
-          />
+            @input="onInput"
+            @keydown.enter.prevent="onEnter"
+          ></div>
         </span>
       </span>
     </div>
@@ -24,7 +25,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onBeforeUnmount } from "vue";
+import { ref, computed, onMounted } from "vue";
 import router from "../router/index.js";
 import words from "@/assets/words.js";
 import cryptoJs from "crypto-js";
@@ -47,6 +48,7 @@ export default {
     const inputWordEnd = ref("");
 
     const wordInput = ref(null);
+    const hiddenInput = ref(null);
 
     const score = ref(0);
     const timer = ref(0);
@@ -55,24 +57,6 @@ export default {
     const wordTimerDisplay = ref(timeLimit);
 
     let animationFrameId = null;
-
-    const calculatePosition = () => {
-      if (quizBoard.value) {
-        const quizBoardRect = quizBoard.value.getBoundingClientRect();
-        whiteRight.value = `${quizBoardRect.right - 170}px`;
-        whiteTop.value = `${quizBoardRect.top + 104}px`;
-        yellowTop.value = `${quizBoardRect.top + 90}px`;
-      }
-    };
-
-    onMounted(() => {
-      calculatePosition();
-      window.addEventListener("resize", calculatePosition);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener("resize", calculatePosition);
-    });
 
     onMounted(() => {
       if (wordInput.value) {
@@ -154,6 +138,16 @@ export default {
       return encryptedData;
     };
 
+    const onEnter = (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        checkAnswer();
+        event.target.innerText = "";
+        hiddenInput.value.focus();
+        wordInput.value.focus();
+      }
+    };
+
     const checkAnswer = () => {
       const enteredWordEnd = inputWordEnd.value.toLowerCase();
       const targetWordBack = currentWord.value.back;
@@ -204,11 +198,13 @@ export default {
       currentWordStart,
       inputWordEnd,
       wordInput,
+      hiddenInput,
       score,
       formattedTimer,
       checkAnswer,
       wordTimerDisplay,
       onInput,
+      onEnter,
       whiteRight,
       whiteTop,
       yellowTop,
@@ -233,6 +229,10 @@ export default {
 #score {
   margin: 20px;
 }
+#hidden-input {
+  opacity: 0;
+  height: 1px;
+}
 span {
   text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000,
     2px 2px 0 #000;
@@ -241,11 +241,9 @@ span {
   line-height: 1;
 }
 #white {
-  position: absolute;
   color: rgb(240, 240, 240);
 }
 #yellow {
-  position: absolute;
   margin: 0;
   display: inline;
   font-size: 60px;

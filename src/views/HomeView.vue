@@ -37,6 +37,6 @@ p {
   width: 80%;
   max-width: 500px;
   margin-bottom: 40px;
-  margin-top: 40px;
+  margin-top: 10px;
 }
 </style>
