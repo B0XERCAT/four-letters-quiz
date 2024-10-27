@@ -141,6 +141,9 @@ export default {
     const onEnter = (event) => {
       if (event.key === "Enter") {
         event.preventDefault();
+        if (!event.target.innerText.trim()) {
+          return;
+        }
         checkAnswer();
         event.target.innerText = "";
         hiddenInput.value.focus();
