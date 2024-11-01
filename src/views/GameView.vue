@@ -16,7 +16,7 @@
             contenteditable="true"
             id="yellow"
             @input="onInput"
-            @keydown.enter.prevent="onEnter"
+            @keypress.enter.prevent="onEnter"
           ></div>
         </span>
       </span>
